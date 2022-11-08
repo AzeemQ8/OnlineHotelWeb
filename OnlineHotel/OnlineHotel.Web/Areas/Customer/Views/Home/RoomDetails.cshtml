@@ -1,0 +1,59 @@
+﻿@model OnlineHotel.ViewModels.RoomViewModel
+
+@{
+    ViewData["Title"] = "RoomDetails";
+}
+
+<h1>Room Details</h1>
+<form method="post">
+    <div class="row">
+        <div class="col-4">
+            <img src="~/Images/@Model.RoomPicture" width="200" height="200"/>
+            <input type="hidden" asp-for="Id"/>
+        </div>
+        <div class="col-8">
+            <div class="row">
+                 <label asp-for="RoomNumber">Room Number : @Model.RoomNumber</label> 
+                  <label asp-for="RoomPrice">Room Price : @Model.RoomPrice.ToString("0.00")</label>
+                  <label>Room Facilities:</label>
+                  <ul>
+                  @foreach (var item in @Model.roomFacilities)
+                {
+                    <li>@item.Title</li>
+                }
+                </ul>
+                 <input type="date" id="date_picker"  asp-for="FromDate" class="form-control"/>
+                 <span>-</span>
+                 
+                 <select asp-for="TotalDays" asp-items="@ViewBag.selectedDays">
+                     <option>Select No Days</option>
+
+                 </select>
+
+                     
+                      <div class="form-control">
+                        
+                               
+                          <button type="submit" class="btn btn-dark">Add to Cart</button>
+                     </div>
+            </div>
+          
+        </div>
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script language="javascript">
+  $(document).ready(function () {
+    var today = new Date().toISOString().split('T')[0];
+    $("#date_picker").attr('min', today);
+});
+        </Script>
+}
+

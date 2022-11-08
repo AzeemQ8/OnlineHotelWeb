@@ -1,0 +1,69 @@
+﻿@using OnlineHotel.Models
+@using OnlineHotel.Utility
+@model PagedResult<OnlineHotel.ViewModels.RoomViewModel>
+
+<form  method="get" asp-action="RoomDetails">
+   
+   <div id="RoomTypeGrid"> 
+   <div class="container-fluid bg-trasparent my-4 p-3"
+        style="position: relative;"> 
+              <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
+               @for (int i = 0; i < @Model.Data.Count(); i++)
+                {
+            
+                      <input type="hidden" asp-for="@Model.Data[i].Id"/>
+                <div class="col"> 
+                   <div class="card h-100 shadow-sm">
+                      <img src="~/Images/@Model.Data[i].RoomPicture" class="card-img-top" alt="...">
+ <div class="card-body">
+     <div class="clearfix mb-3">
+         <span class="float-start badge rounded-pill bg-primary">
+            
+           @Model.Data[i].RoomType.Name</span>
+             <span class="float-end price-hp">
+                 @Model.Data[i].RoomNumber Room Status :@Model.Data[i].Status </span>
+             </div>
+             <h5 class="card-title">Room Facilities:<ul>
+
+                 @foreach (var facility in @Model.Data[i].roomFacilities)
+                                {
+                                   <li>@facility.Title</li>
+                                }
+                                </ul>
+             </h5>
+    <div class="text-center my-4">                      
+      @if (@Model.Data[i].Status==(RoomAvail.Booked))
+             {
+         <a asp-action="RoomDetails" hidden asp-controller="Home" asp-route-roomId="@Model.Data[i].Id" class="btn btn-primary">Details</a>
+              }
+        else
+
+        {
+        <a asp-action="RoomDetails" asp-controller="Home" asp-route-roomId="@Model.Data[i].Id" class="btn btn-primary">Details</a>
+         }        </div>
+                     </div>
+                     </div>
+                     </div>
+
+            }        </div>
+                 </div>
+                 </div>
+</form>
+
+<cs-pager cs-paging-pagesize=(int)Model.PageSize
+          cs-paging-pagenumber=(int)Model.PageNumber
+          cs-paging-totalitems=(int)Model.TotalItems
+          cs-pagenumber-param="pageNumber"
+          asp-controller="Home"
+         
+          asp-action="Index"          
+          cs-pager-li-current-class="page-item active"
+          cs-pager-li-other-class="page-item"
+          cs-pager-li-non-active-class="page-item disabled"
+          cs-pager-link-current-class="page-link"
+          cs-pager-link-other-class="page-link">
+      </cs-pager>
+
+
+
+      
